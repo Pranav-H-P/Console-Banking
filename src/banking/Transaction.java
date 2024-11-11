@@ -13,28 +13,30 @@ public class Transaction {
 
     private static int transactionCount = 0; // To keep track of total transactions made (for assigning ID)
 
-    private LocalDateTime tTime; // Time of transaction occuring
-    int tType; // Type of transaction (1 - deposit, 2 - withdrawal)
+    public LocalDateTime tTime; // Time of transaction occuring
+    int tType; // Type of transaction (1 - deposit, 2 - withdrawal, 3 - interest)
     int tID; // ID of transaction
-    int tAmount; // Amount of money in transaction
+    double tAmount; // Amount of money in transaction
+    double resultAmount;
 
 
     static int getTotalTransactions(){
         return transactionCount;
     }
 
-    Transaction(int tType, int tAmount){
+    Transaction(int tType, double tAmount, double resultAmount){
 
         this.tID = transactionCount;
         this.tType = tType;
         this.tAmount = tAmount;
         this.tTime = LocalDateTime.now();
+        this.resultAmount = resultAmount;
 
         transactionCount += 1;
 
     }
 
-    public String getTime(){ // for returning human readable date and time
+    public String getHumanTime(){ // for returning human readable date and time
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return this.tTime.format(formatter);
