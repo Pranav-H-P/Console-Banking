@@ -8,7 +8,7 @@ public class Account {
 
     private static int accountCounts = 0;
     private static ArrayList<Account> AllAcounts = new ArrayList<>();
-
+    private boolean interestAdded = false; // To prevent multiple interest calculations
     private int accountID;
     private int accountType; // 1 - savings, 2 - checking
     private double currentBalance;
@@ -18,8 +18,33 @@ public class Account {
 
     public static void updateAllInterest(){
         for (Account a: AllAcounts){
-            a.addInterest();
+            if (a.accountType == 1 && !a.interestAdded){
+                a.addInterest();
+                a.interestAdded = true;
+            }
         }
+    }
+
+    public static void setInterestFlagFalse(){
+        for (Account a: AllAcounts){
+
+            a.interestAdded = false;
+
+        }
+    }
+
+    public int getAccountID(){
+        return this.accountID;
+    }
+
+    public String getAccountType(){
+
+        if (accountType == 1){
+            return "Savings";
+        }else{
+            return "Checking";
+        }
+
     }
 
     Account(int type){
@@ -132,10 +157,10 @@ public class Account {
             }else{
                 transType = "Received Interest on";
             }
-            statement.append(String.format("%s %s on %s (ID: %s)", transType, t.tAmount, t.getHumanTime(), t.tID));
+            statement.append(String.format("%s %s on %s (ID: %s)\n", transType, t.tAmount, t.getHumanTime(), t.tID));
 
         }
-
+        statement.append("\n");
         return statement.toString();
 
     }
